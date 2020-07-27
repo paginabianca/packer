@@ -103,7 +103,7 @@ type FlatConfig struct {
 	UnmountISO                *bool               `mapstructure:"unmount_iso" cty:"unmount_iso" hcl:"unmount_iso"`
 	CloudInit                 *bool               `mapstructure:"cloud_init" cty:"cloud_init" hcl:"cloud_init"`
 	CloudInitStoragePool      *string             `mapstructure:"cloud_init_storage_pool" cty:"cloud_init_storage_pool" hcl:"cloud_init_storage_pool"`
-	CDDrive                   []FlatstorageConfig `mapstructure:"cd_drive" cty:"cd_drive" hcl:"cd_drive"`
+	AdditionalISOFiles        []FlatstorageConfig `mapstructure:"additional_iso_files" cty:"additional_iso_files" hcl:"additional_iso_files"`
 }
 
 // FlatMapstructure returns a new FlatConfig.
@@ -212,7 +212,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"unmount_iso":                  &hcldec.AttrSpec{Name: "unmount_iso", Type: cty.Bool, Required: false},
 		"cloud_init":                   &hcldec.AttrSpec{Name: "cloud_init", Type: cty.Bool, Required: false},
 		"cloud_init_storage_pool":      &hcldec.AttrSpec{Name: "cloud_init_storage_pool", Type: cty.String, Required: false},
-		"cd_drive":                     &hcldec.BlockListSpec{TypeName: "cd_drive", Nested: hcldec.ObjectSpec((*FlatstorageConfig)(nil).HCL2Spec())},
+		"additional_iso_files":         &hcldec.BlockListSpec{TypeName: "additional_iso_files", Nested: hcldec.ObjectSpec((*FlatstorageConfig)(nil).HCL2Spec())},
 	}
 	return s
 }
@@ -246,30 +246,6 @@ func (*FlatdiskConfig) HCL2Spec() map[string]hcldec.Spec {
 		"disk_size":         &hcldec.AttrSpec{Name: "disk_size", Type: cty.String, Required: false},
 		"cache_mode":        &hcldec.AttrSpec{Name: "cache_mode", Type: cty.String, Required: false},
 		"format":            &hcldec.AttrSpec{Name: "format", Type: cty.String, Required: false},
-	}
-	return s
-}
-
-// FlatstorageConfig is an auto-generated flat version of storageConfig.
-// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
-type FlatstorageConfig struct {
-	Bus       *string `mapstructure:"bus" cty:"bus" hcl:"bus"`
-	Filename  *string `mapstructure:"filename" cty:"filename" hcl:"filename"`
-	BusNumber *int    `mapstructure:"bus_number" cty:"bus_number" hcl:"bus_number"`
-}
-
-// FlatMapstructure returns a new FlatstorageConfig.
-// FlatstorageConfig is an auto-generated flat version of storageConfig.
-// Where the contents of a field with a `mapstructure:,squash` tag are boubled up.
-func (*storageConfig) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
-	return new(FlatstorageConfig)
-}
-
-func (*FlatstorageConfig) HCL2Spec() map[string]hcldec.Spec {
-	s := map[string]hcldec.Spec{
-		"bus":        &hcldec.AttrSpec{Name: "bus", Type: cty.String, Required: false},
-		"filename":   &hcldec.AttrSpec{Name: "filename", Type: cty.String, Required: false},
-		"bus_number": &hcldec.AttrSpec{Name: "bus_number", Type: cty.Number, Required: false},
 	}
 	return s
 }

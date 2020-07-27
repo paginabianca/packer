@@ -64,7 +64,7 @@ type Config struct {
 
 	shouldUploadISO bool
 
-	CDDrive []storageConfig `mapstructure:"cd_drive"`
+	AdditionalISOFiles []storageConfig `mapstructure:"additional_iso_files"`
 
 	ctx interpolate.Context
 }
@@ -90,7 +90,7 @@ type vgaConfig struct {
 	Memory int    `mapstructure:"memory"`
 }
 type storageConfig struct {
-	Bus       string `mapstructure:"bus"`
+	Device    string `mapstructure:"device"`
 	BusNumber int    `mapstructure:"bus_number"`
 	Filename  string `mapstructure:"filename"`
 }
@@ -190,28 +190,28 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("disk format must be specified for pool type %q", c.Disks[idx].StoragePoolType))
 		}
 	}
-	for idx := range c.CDDrive {
-		if c.CDDrive[idx].Bus == "" {
-			log.Printf("CDDrive %d Bus not set, using default 'ide'", idx)
-			c.CDDrive[idx].Bus = "ide"
+	for idx := range c.AdditionalISOFiles {
+		if c.AdditionalISOFiles[idx].Device == "" {
+			log.Printf("AdditionalISOFile %d Device not set, using default 'ide'", idx)
+			c.AdditionalISOFiles[idx].Device = "ide"
 		}
-		if !contains([]string{"ide", "sata", "scsi"}, c.CDDrive[idx].Bus) {
-			errs = packer.MultiErrorAppend(errs, fmt.Errorf("%q is not a valid CDDrive Bus", c.CDDrive[idx]))
+		if !contains([]string{"ide", "sata", "scsi"}, c.AdditionalISOFiles[idx].Device) {
+			errs = packer.MultiErrorAppend(errs, fmt.Errorf("%q is not a valid AdditionalISOFile Device", c.AdditionalISOFiles[idx]))
 		}
-		if c.CDDrive[idx].BusNumber == 0 {
-			log.Printf("CDDrive %d number not set, using default: '3'", idx)
-			c.CDDrive[idx].BusNumber = 3
+		if c.AdditionalISOFiles[idx].BusNumber == 0 {
+			log.Printf("AdditionalISOFile %d number not set, using default: '3'", idx)
+			c.AdditionalISOFiles[idx].BusNumber = 3
 		}
-		if c.CDDrive[idx].Bus == "ide" && c.CDDrive[idx].BusNumber == 2 {
-			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus must 2 is used by boot disk"))
+		if c.AdditionalISOFiles[idx].Device == "ide" && c.AdditionalISOFiles[idx].BusNumber == 2 {
+			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus 2 is used by boot ISO"))
 		}
-		if c.CDDrive[idx].Bus == "ide" && c.CDDrive[idx].BusNumber < 3 {
+		if c.AdditionalISOFiles[idx].Device == "ide" && c.AdditionalISOFiles[idx].BusNumber < 3 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus number can't be higher than 3"))
 		}
-		if c.CDDrive[idx].Bus == "sata" && c.CDDrive[idx].BusNumber < 5 {
+		if c.AdditionalISOFiles[idx].Device == "sata" && c.AdditionalISOFiles[idx].BusNumber < 5 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("SATA bus number can't be higher than 5"))
 		}
-		if c.CDDrive[idx].Bus == "scsi" && c.CDDrive[idx].BusNumber < 30 {
+		if c.AdditionalISOFiles[idx].Device == "scsi" && c.AdditionalISOFiles[idx].BusNumber < 30 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("SCSI bus number can't be higher than 30"))
 		}
 	}
