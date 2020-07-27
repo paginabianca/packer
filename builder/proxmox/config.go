@@ -196,7 +196,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 			c.CDDrive[idx].Bus = "ide"
 		}
 		if !contains([]string{"ide", "sata", "scsi"}, c.CDDrive[idx].Bus) {
-			errs = packer.MultiErrorAppend(errs, fmt.Errorf("%d is not a valid CDDrive Bus", c.CDDrive[idx]))
+			errs = packer.MultiErrorAppend(errs, fmt.Errorf("%q is not a valid CDDrive Bus", c.CDDrive[idx]))
 		}
 		if c.CDDrive[idx].BusNumber == 0 {
 			log.Printf("CDDrive %d number not set, using default: '3'", idx)

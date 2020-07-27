@@ -97,7 +97,7 @@ func (s *stepStartVM) Run(ctx context.Context, state multistep.StateBag) multist
 		}
 		_, err = client.SetVmConfig(vmRef, params)
 		if err != nil {
-			err := fmt.Errorf("Error configuring VM: %s")
+			err := fmt.Errorf("Error configuring VM: %s", err)
 			state.Put("error", err)
 			ui.Error(err.Error())
 			return multistep.ActionHalt
