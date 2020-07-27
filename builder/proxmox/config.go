@@ -205,13 +205,13 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		if c.CDDrive[idx].Bus == "ide" && c.CDDrive[idx].BusNumber == 2 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus must 2 is used by boot disk"))
 		}
-		if c.CDDrive[idx].Bus == "ide" && c.CDDrive[idx].BusNumber <= 3 {
+		if c.CDDrive[idx].Bus == "ide" && c.CDDrive[idx].BusNumber < 3 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus number can't be higher than 3"))
 		}
-		if c.CDDrive[idx].Bus == "sata" && c.CDDrive[idx].BusNumber <= 5 {
+		if c.CDDrive[idx].Bus == "sata" && c.CDDrive[idx].BusNumber < 5 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("SATA bus number can't be higher than 5"))
 		}
-		if c.CDDrive[idx].Bus == "scsi" && c.CDDrive[idx].BusNumber <= 30 {
+		if c.CDDrive[idx].Bus == "scsi" && c.CDDrive[idx].BusNumber < 30 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("SCSI bus number can't be higher than 30"))
 		}
 	}

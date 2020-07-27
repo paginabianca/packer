@@ -250,6 +250,30 @@ func (*FlatdiskConfig) HCL2Spec() map[string]hcldec.Spec {
 	return s
 }
 
+// FlatstorageConfig is an auto-generated flat version of storageConfig.
+// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
+type FlatstorageConfig struct {
+	Bus       *string `mapstructure:"bus" cty:"bus" hcl:"bus"`
+	Filename  *string `mapstructure:"filename" cty:"filename" hcl:"filename"`
+	BusNumber *int    `mapstructure:"bus_number" cty:"bus_number" hcl:"bus_number"`
+}
+
+// FlatMapstructure returns a new FlatstorageConfig.
+// FlatstorageConfig is an auto-generated flat version of storageConfig.
+// Where the contents of a field with a `mapstructure:,squash` tag are boubled up.
+func (*storageConfig) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
+	return new(FlatstorageConfig)
+}
+
+func (*FlatstorageConfig) HCL2Spec() map[string]hcldec.Spec {
+	s := map[string]hcldec.Spec{
+		"bus":        &hcldec.AttrSpec{Name: "bus", Type: cty.String, Required: false},
+		"filename":   &hcldec.AttrSpec{Name: "filename", Type: cty.String, Required: false},
+		"bus_number": &hcldec.AttrSpec{Name: "bus_number", Type: cty.Number, Required: false},
+	}
+	return s
+}
+
 // FlatnicConfig is an auto-generated flat version of nicConfig.
 // Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
 type FlatnicConfig struct {
