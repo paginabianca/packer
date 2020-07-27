@@ -91,6 +91,19 @@ func (s *stepStartVM) Run(ctx context.Context, state multistep.StateBag) multist
 	// instance id inside of the provisioners, used in step_provision.
 	state.Put("instance_id", vmRef)
 
+	for idx := range c.CDDrive {
+		params := map[string]interface{}{
+			c.CDDrive[idx].Bus + strconv.Itoa(c.CDDrive[idx].BusNumber): c.CDDrive[idx].Filename + ",media=cdrom",
+		}
+		_, err = client.SetVmConfig(vmRef, params)
+		if err != nil {
+			err := fmt.Errorf("Error configuring VM: %s")
+			state.Put("error", err)
+			ui.Error(err.Error())
+			return multistep.ActionHalt
+		}
+	}
+	//LOOK HERE, add the error msg to CDDrive SetVmConfig same as below
 	ui.Say("Starting VM")
 	_, err = client.StartVm(vmRef)
 	if err != nil {
