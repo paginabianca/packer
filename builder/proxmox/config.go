@@ -205,13 +205,13 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 		if c.AdditionalISOFiles[idx].Device == "ide" && c.AdditionalISOFiles[idx].BusNumber == 2 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus 2 is used by boot ISO"))
 		}
-		if c.AdditionalISOFiles[idx].Device == "ide" && c.AdditionalISOFiles[idx].BusNumber < 3 {
+		if c.AdditionalISOFiles[idx].Device == "ide" && c.AdditionalISOFiles[idx].BusNumber > 3 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("IDE bus number can't be higher than 3"))
 		}
-		if c.AdditionalISOFiles[idx].Device == "sata" && c.AdditionalISOFiles[idx].BusNumber < 5 {
+		if c.AdditionalISOFiles[idx].Device == "sata" && c.AdditionalISOFiles[idx].BusNumber > 5 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("SATA bus number can't be higher than 5"))
 		}
-		if c.AdditionalISOFiles[idx].Device == "scsi" && c.AdditionalISOFiles[idx].BusNumber < 30 {
+		if c.AdditionalISOFiles[idx].Device == "scsi" && c.AdditionalISOFiles[idx].BusNumber > 30 {
 			errs = packer.MultiErrorAppend(errs, fmt.Errorf("SCSI bus number can't be higher than 30"))
 		}
 	}
