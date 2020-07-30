@@ -25,7 +25,7 @@ func NewProxmoxDriver(c commandTyper, vmRef *proxmox.VmRef, interval time.Durati
 		"del":      "delete",
 		"return":   "ret",
 		"enter":    "ret",
-		"pageUp":   "pgup",
+		"pageUp":   "shift-f10",
 		"pageDown": "pgdn",
 	}
 	// Mappings for runes that need to be translated to special qkeycodes
