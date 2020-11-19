@@ -61,7 +61,7 @@ type Config struct {
 	CloudInitStoragePool string `mapstructure:"cloud_init_storage_pool"`
 
 	AdditionalISOFiles []storageConfig `mapstructure:"additional_iso_files"`
-	VMInterface        string          `mapstructure:"vm_interface"`
+	Interfaces		   interfaceConfig `mapstructure:"interfaces"`
 
 	Ctx interpolate.Context `mapstructure-to-hcl2:",skip"`
 }
@@ -96,6 +96,10 @@ type diskConfig struct {
 type vgaConfig struct {
 	Type   string `mapstructure:"type"`
 	Memory int    `mapstructure:"memory"`
+}
+type interfaceConfig struct {
+	VMInterface string `mapstructure:"vm"`
+	VMIPv6 bool `mapstructure:"vm_ipv6"`
 }
 
 func (c *Config) Prepare(upper interface{}, raws ...interface{}) ([]string, []string, error) {

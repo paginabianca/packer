@@ -137,9 +137,9 @@ func getVMIP(state multistep.StateBag) (string, error) {
 		return "", err
 	}
 
-	if config.VMInterface != "" {
+	if config.Interfaces != nil {
 		for _, iface := range ifs {
-			if config.VMInterface != iface.Name {
+			if config.Interfaces.VMInterface != iface.Name {
 				continue
 			}
 
@@ -147,11 +147,13 @@ func getVMIP(state multistep.StateBag) (string, error) {
 				if addr.IsLoopback() {
 					continue
 				}
+				if addr.To4() == nil && config.Interfaces.VMIPv6 {
+					continue
 				return addr.String(), nil
 			}
-			return "", fmt.Errorf("Interface %s only has loopback addresses", config.VMInterface)
+			return "", fmt.Errorf("Interface %s only has loopback addresses or no IPv6 address", config.Interfaces)
 		}
-		return "", fmt.Errorf("Interface %s not found in VM", config.VMInterface)
+		return "", fmt.Errorf("Interface %s not found in VM", config.Interfaces)
 	}
 
 	for _, iface := range ifs {
